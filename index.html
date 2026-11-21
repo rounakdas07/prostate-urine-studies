@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#18212b">
+  <title>Prostate urine studies — compare methods, export evidence</title>
+  <meta name="description" content="A practical evidence workbench for urine-based prostate cancer research. Compare collection, storage, controls and validation, then export a sourced brief.">
+  <meta property="og:title" content="Prostate urine studies">
+  <meta property="og:description" content="Compare the protocols behind published urine tests. Search, compare and export an evidence brief with original sources.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2318212b'/%3E%3Cpath d='M8 8h16M8 16h16M8 24h16' stroke='white' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#workspace">Skip to studies</a>
+  <header class="masthead"><a href="./" class="wordmark">Prostate urine studies</a><span>A research workbench by Rounak Das</span><a href="#about">About the evidence</a></header>
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <div><h1 id="page-title">Compare prostate urine-test protocols.</h1><p>See how published studies collected and tested urine. Export the methods, validation details and original sources.</p></div>
+      <button id="example" class="primary" disabled>Try a 3-study comparison</button>
+    </section>
+    <nav class="workspace-nav" aria-label="Workspace views"><button id="studies-tab" aria-current="page">Find studies <span id="total-count">…</span></button><button id="compare-tab">Compare selected <span id="selected-count">0</span></button><p id="catalogue-date">Loading source records…</p></nav>
+    <div id="load-error" class="error" role="alert" hidden>Could not load the study records. <button id="retry">Try again</button></div>
+    <div id="workspace" tabindex="-1">
+      <section id="studies-view" aria-label="Find studies">
+        <div class="filters">
+          <label class="search-label">Search studies<input id="search" type="search" placeholder="Author, device, method or keyword…" autocomplete="off"></label>
+          <button id="filters-toggle" class="mobile-only" aria-expanded="false" aria-controls="filter-fields">More filters</button>
+          <div id="filter-fields" class="filter-fields">
+          <label>Test method<select id="method" aria-label="Test method"><option value="">All methods</option></select></label>
+          <label>Comparison group<select id="controls" aria-label="Comparison group"><option value="">All comparison groups</option></select></label>
+          <label>Validation<select id="validation" aria-label="Validation"><option value="">All evaluation designs</option></select></label>
+          </div>
+        </div>
+        <div class="quick-filters" aria-label="Quick filters"><span>Quick filters:</span><button data-preset="electronic">Electronic noses</button><button data-preset="clinical">Biopsy / BPH controls</button><button data-preset="heldout">Held-out testing</button><button id="reset">Reset filters</button></div>
+        <div class="result-bar"><p id="result-count" role="status" aria-live="polite">Loading studies…</p><div><label class="sort-label">Sort<select id="sort"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="participants">Participant count</option><option value="author">Author A–Z</option></select></label><button id="export-results" disabled>Export results (.csv)</button></div></div>
+        <p class="table-help">Tick up to 4 studies to compare. Open a study name for the extraction and source locations.</p>
+        <div class="table-wrap"><table class="studies-table"><caption class="sr-only">Published urine-based prostate cancer studies</caption><thead><tr><th scope="col" class="pick-col">Select</th><th scope="col">Study</th><th scope="col">Participants &amp; controls</th><th scope="col">Test method</th><th scope="col">Collection &amp; storage</th><th scope="col">Validation</th><th scope="col">Source</th></tr></thead><tbody id="study-rows"></tbody></table></div>
+        <div id="empty" class="empty" hidden><h2>No matching studies</h2><p>Try a shorter search or remove a filter. This is a curated collection, not a complete literature search.</p><button id="empty-reset">Show all studies</button></div>
+        <div id="selection-bar" class="selection-bar" hidden><p id="selection-summary"></p><div><button id="clear-selection">Clear selection</button><button class="primary" id="compare-now">Compare selected</button></div></div>
+      </section>
+      <section id="compare-view" aria-label="Compare selected studies" hidden>
+        <div class="compare-heading"><div><h2>Protocol comparison</h2><p>Read the methods side by side, then export the comparison with its sources.</p></div><button id="back-studies">Choose studies</button></div>
+        <div id="compare-empty" class="empty"><h3>Your comparison starts here</h3><p>Select 2–4 studies in the table, or open the worked example.</p><button id="example-empty" class="primary">Try a 3-study comparison</button></div>
+        <div id="comparison-content" hidden>
+          <div class="compare-tools"><label class="check-label"><input id="differences-only" type="checkbox"> Show rows that differ</label><div><button id="copy-link">Copy comparison link</button><button id="export-brief" class="primary">Download evidence brief</button></div></div>
+          <p class="mobile-only scroll-hint">Swipe across the table to see every study.</p>
+          <div id="comparison-table" class="compare-scroll" tabindex="0" aria-label="Side-by-side comparison; scroll horizontally if needed"></div>
+          <section class="comparison-notes" aria-labelledby="check-heading"><h3 id="check-heading">What to keep in mind</h3><p>These notes follow from the extracted fields. They are prompts for review, not a formal risk-of-bias assessment.</p><ul id="comparison-checks"></ul></section>
+          <div class="brief-notes"><label for="notes">Your notes <span>Optional · stored in this browser · included in the brief</span></label><textarea id="notes" rows="3" maxlength="6000" placeholder="Questions for the next research meeting, methods to investigate…"></textarea><p id="storage-status"></p></div>
+          <div class="export-bar"><p>The brief includes the comparison, interpretation notes, your notes and linked references.</p><div><button id="export-comparison">Comparison spreadsheet (.csv)</button><button id="export-ris">Citations (.ris)</button><button id="print-brief">Print / save PDF</button></div></div>
+        </div>
+      </section>
+    </div>
+    <section id="about" class="about"><details><summary>What is included, and how to read it</summary><div class="about-grid"><div><h2>Scope</h2><p>A curated set of primary studies of urine volatile organic compounds (VOCs) and electronic noses for prostate-cancer research, including sample-preparation and drift studies. This is a starting collection, not a systematic review. Publication counts are not counts of independent cohorts.</p><p>Every record links to the original paper and identifies the sections used. “Not extracted” means this tool has no verified value; it does not mean the authors failed to report it.</p><a id="pubmed-link" target="_blank" rel="noopener noreferrer" href="https://pubmed.ncbi.nlm.nih.gov/?term=%28prostate+cancer%29+AND+urine+AND+%28volatile+organic+compounds+OR+electronic+nose%29&sort=date">Check PubMed for newer studies</a></div><div><h2>Validation labels</h2><p><strong>Cross-validation:</strong> repeated training and testing within a cohort. <strong>Same-cohort holdout:</strong> one recruited cohort split into training and test groups. <strong>Blinded test:</strong> predictions tested with labels concealed; see the record for separation from development data. <strong>Separate test cohort:</strong> an additional cohort reported by the paper; this does not establish independent, multi-centre validation.</p><p>Study populations, devices and endpoints differ. Reported performance belongs to the specified analysis; it is not a league table or a prediction of Anemo’s performance.</p></div><div><h2>Use and privacy</h2><p>For literature review and research planning. This tool does not diagnose cancer or prescribe a sampling protocol. Check original methods and local approvals before using them in a study.</p><p>No sign-in. Selections and notes stay in this browser. Shared links include study IDs and filters, never your notes. Downloads contain your notes when selected.</p><p>Independent prototype built for Anemo Labs by Rounak Das. No affiliation or endorsement implied.</p><a href="https://github.com/rounakdas07/prostate-urine-studies" target="_blank" rel="noopener noreferrer">Source code and extraction register</a></div></div></details></section>
+  </main>
+  <footer><span>Built by Rounak Das · Nottingham medical student</span><span>Original papers remain authoritative.</span></footer>
+  <dialog id="study-dialog" aria-labelledby="dialog-title"><div class="dialog-top"><span id="dialog-citation"></span><button id="close-dialog" aria-label="Close study details">Close</button></div><div id="dialog-body"></div></dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <noscript><p class="error">JavaScript is needed to search and compare. You can still <a href="data.json">download the study records</a> and <a href="SOURCES.md">read the source register</a>.</p></noscript>
+</body>
+</html>
